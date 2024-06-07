@@ -32,6 +32,10 @@ const isFileExists = (fileName) => {
   return fs.existsSync(`${LOG_FOLDER_PATH}/${fileName}.txt`);
 };
 
+const isFolderExists = () => {
+  return fs.existsSync(LOG_FOLDER_PATH);
+};
+
 const addRecordToLogFile = (win) => {
   const resultRecord =
     new Date().toISOString() + (win ? ": Победа" : ": Проигрыш") + "\n";
@@ -41,6 +45,11 @@ const addRecordToLogFile = (win) => {
 };
 
 const createLogFile = () => {
+  if (!isFolderExists()) {
+    fs.mkdir(LOG_FOLDER_PATH, (error) => {
+      if (error) throw new Error(error);
+    });
+  }
   rl.question(
     "Для начала игры напиши название файла для логирования результатов игры. ",
     (answer) => {
@@ -98,4 +107,5 @@ const checkAnswer = (answer) => {
   }
 };
 
+// console.log(isFolderExists());
 createLogFile();
